@@ -11,7 +11,7 @@ const Footer = () => {
                     <div>
                         <Link href="/" className="mb-10 block">
                             <span className="text-4xl font-black bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
-                                CUYANIMELIST
+                                ANIME LIST
                             </span>
                         </Link>
 
