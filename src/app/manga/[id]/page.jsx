@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic"
+export const runtime = "nodejs"
+
 import { getMangaResponse } from "@/libs/api-libs";
 import Image from "next/image";
 import CollectionButton from "@/components/AnimeList/collectionButton";
