@@ -1,7 +1,7 @@
 import prisma from "@/libs/prisma"
 
-export const dynamic = "force-dynamic"   // 🔥 WAJIB
-export const runtime = "nodejs"          // 🔥 WAJIB (Prisma)
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 export async function POST(request) {
     try {
@@ -9,7 +9,7 @@ export async function POST(request) {
 
         if (!body?.user_email || !body?.anime_mal_id) {
             return Response.json(
-                { isCreated: false, message: "Invalid payload" },
+                { isCreated: false },
                 { status: 400 }
             )
         }
@@ -18,18 +18,14 @@ export async function POST(request) {
             data: {
                 anime_mal_id: String(body.anime_mal_id),
                 user_email: body.user_email,
-                anime_image: body.anime_image,
-                anime_title: body.anime_title,
+                anime_image: body.anime_image ?? "",
+                anime_title: body.anime_title ?? "",
             },
         })
 
         return Response.json({ isCreated: true })
     } catch (error) {
-        console.error("POST /api/v1/collection error:", error)
-
-        return Response.json(
-            { isCreated: false, message: "Gagal menyimpan koleksi" },
-            { status: 500 }
-        )
+        console.error("POST /api/v1/collection:", error)
+        return Response.json({ isCreated: false }, { status: 500 })
     }
 }
