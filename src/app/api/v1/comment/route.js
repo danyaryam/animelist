@@ -1,11 +1,13 @@
 import prisma from "@/libs/prisma"
 
+export const dynamic = "force-dynamic"   // 🔥 WAJIB
+export const runtime = "nodejs"          // 🔥 WAJIB (Prisma butuh Node)
+
 export async function GET(request) {
     try {
         const { searchParams } = new URL(request.url)
         const anime_mal_id = searchParams.get("anime_mal_id")
 
-        // Validasi parameter
         if (!anime_mal_id) {
             return Response.json(
                 { success: false, comments: [] },
@@ -32,7 +34,7 @@ export async function GET(request) {
         return Response.json(
             {
                 success: false,
-                message: "Gagal mengambil komentar",
+                comments: [],
             },
             { status: 500 }
         )
