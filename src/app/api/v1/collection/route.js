@@ -1,17 +1,13 @@
-import prisma from "@/libs/prisma"
-
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
 export async function POST(request) {
     try {
+        const prisma = (await import("@/libs/prisma")).default
         const body = await request.json()
 
         if (!body?.user_email || !body?.anime_mal_id) {
-            return Response.json(
-                { isCreated: false },
-                { status: 400 }
-            )
+            return Response.json({ isCreated: false }, { status: 400 })
         }
 
         await prisma.collection.create({
@@ -25,7 +21,7 @@ export async function POST(request) {
 
         return Response.json({ isCreated: true })
     } catch (error) {
-        console.error("POST /api/v1/collection:", error)
+        console.error("POST /api/v1/collection", error)
         return Response.json({ isCreated: false }, { status: 500 })
     }
 }
