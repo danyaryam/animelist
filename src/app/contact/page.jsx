@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SendButton from "@/components/utilities/SendButton";
+import SendButton from "@/components/Utilities/SendButton";
 
 export default function Page() {
     return (
