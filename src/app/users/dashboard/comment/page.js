@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic"
+export const runtime = "nodejs"
+
 import { authUserSession } from '@/libs/auth-libs'
 import prisma from '@/libs/prisma'
 import React from 'react'
@@ -6,7 +9,25 @@ import Header from '@/components/dashboard/header'
 
 const page = async () => {
     const user = await authUserSession()
-    const comments = await prisma.comment.findMany({ where: { user_email: user.email } })
+    if (!user?.email) {
+        return (
+            <section className="mt-4 px-4 w-full">
+                <Header title="My Comment" />
+                <p className="text-color-primary">
+                    Silakan login untuk melihat komentar Anda.
+                </p>
+            </section>
+        )
+    }
+
+    const comments = await prisma.comment.findMany({
+        where: {
+            user_email: user.email,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    })
 
     return (
         <section className="mt-4 px-4 w-full">
