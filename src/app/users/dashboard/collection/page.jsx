@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic"
+export const runtime = "nodejs"
+
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/dashboard/header";
@@ -6,7 +9,25 @@ import prisma from "@/libs/prisma";
 
 const Page = async () => {
     const user = await authUserSession()
-    const collection = await prisma.collection.findMany({ where: { user_email: user.email } })
+    if (!user?.email) {
+        return (
+            <section className="mt-4 px-4 w-full">
+                <Header title="My Collection" />
+                <p className="text-color-primary">
+                    Silakan login untuk melihat koleksi Anda.
+                </p>
+            </section>
+        )
+    }
+
+    const collection = await prisma.collection.findMany({
+        where: {
+            user_email: user.email,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    })
 
     return (
         <section className="mt-4 px-4 w-full">
