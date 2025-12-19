@@ -13,15 +13,15 @@ import Link from "next/link"
 import StreamingList from "@/components/streaming/page"
 
 const Page = async ({ params: { id } }) => {
-    const prisma = (await import("@/libs/prisma")).default
-
+    
     const anime = await getAnimeResponse(`anime/${id}`)
     const streaming = await getStreamingResponse(`anime/${id}/streaming`)
     const user = await authUserSession()
-
+    
     let collection = null
-
+    
     if (user?.email) {
+        const prisma = (await import("@/libs/prisma")).default
         collection = await prisma.collection.findFirst({
             where: {
                 user_email: user.email,
