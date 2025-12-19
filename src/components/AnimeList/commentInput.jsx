@@ -20,7 +20,10 @@ const CommentInput = ({ anime_mal_id, user_email, username, anime_title }) => {
 
         const response = await fetch("/api/v1/comment", {
             method: "POST",
-            body: JSON.stringify(data)
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
         })
         const postComment = await response.json()
         if (postComment.isCreated) {
@@ -35,8 +38,8 @@ const CommentInput = ({ anime_mal_id, user_email, username, anime_title }) => {
         <div className="flex flex-col gap-2">
             {isCreated && <p className="text-color-primary">postingan terkirim...</p>}
 
-            <textarea 
-                onChange={handleInput} 
+            <textarea
+                onChange={handleInput}
                 value={comment}
                 className="w-full h-32 text-xl p-4" />
             <button onClick={handlePosting} className="w-52 py-2 px-3 bg-color-accent">Posting Komentar</button>

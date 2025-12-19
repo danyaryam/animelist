@@ -1,45 +1,17 @@
-import prisma from '@/libs/prisma'
+import prisma from "@/libs/prisma"
 
-export const runtime = 'nodejs'
+export async function GET(request) {
+    const { searchParams } = new URL(request.url)
+    const anime_mal_id = searchParams.get("anime_mal_id")
 
-export async function POST(request) {
-    try {
-        const {
-            anime_mal_id,
-            user_email,
-            comment,
-            username,
-            anime_title
-        } = await request.json()
-
-        // Validasi minimal (opsional tapi direkomendasikan)
-        if (!anime_mal_id || !user_email || !comment) {
-            return Response.json(
-                { isCreated: false, message: 'Invalid payload' },
-                { status: 400 }
-            )
-        }
-
-        await prisma.comment.create({
-            data: {
-                anime_mal_id,
-                user_email,
-                comment,
-                username,
-                anime_title
-            }
-        })
-
-        return Response.json(
-            { isCreated: true },
-            { status: 201 }
-        )
-    } catch (error) {
-        console.error('Create comment error:', error)
-
-        return Response.json(
-            { isCreated: false, message: error.message },
-            { status: 500 }
-        )
+    if (!anime_mal_id) {
+        return Response.json({ comments: [] }, { status: 400 })
     }
+
+    const comments = await prisma.comment.findMany({
+        where: { anime_mal_id },
+        orderBy: { createdAt: "desc" },
+    })
+
+    return Response.json({ comments })
 }

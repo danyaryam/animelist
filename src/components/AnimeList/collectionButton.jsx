@@ -12,7 +12,10 @@ const CollectionButton = ({ anime_mal_id, user_email, anime_image, anime_title }
 
         const response = await fetch("/api/v1/collection", {
             method: "POST",
-            body: JSON.stringify(data)
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
         })
         const collection = await response.json()
         if (collection.isCreated) {
@@ -24,16 +27,16 @@ const CollectionButton = ({ anime_mal_id, user_email, anime_image, anime_title }
     return (
         <>
             {
-                isCreated 
-                ? 
-                <p className='text-color-primary'>Berhasil Ditambahkan Ke Koleksi</p>
-                :
-                <button
-                    onClick={handleCollection}
-                    className="px-2 py-1 bg-color-accent">
-                    Add To Collection
-                </button>
-                }
+                isCreated
+                    ?
+                    <p className='text-color-primary'>Berhasil Ditambahkan Ke Koleksi</p>
+                    :
+                    <button
+                        onClick={handleCollection}
+                        className="px-2 py-1 bg-color-accent">
+                        Add To Collection
+                    </button>
+            }
         </>
     )
 }
