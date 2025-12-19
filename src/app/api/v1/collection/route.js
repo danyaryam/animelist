@@ -1,11 +1,21 @@
-import prisma from "@/libs/prisma"
+import prisma from '@/libs/prisma'
+
+export const runtime = 'nodejs'
 
 export async function POST(request) {
-    const { anime_mal_id, user_email, anime_image, anime_title } = await request.json()
-    const data = { anime_mal_id, user_email, anime_image, anime_title }
+    try {
+        const body = await request.json()
 
-    const createCollection = await prisma.collection.create({ data })
-    
-    if (!createCollection) return Response.json({ status: 500, isCreated: false })
-    else return Response.json({ status: 200, isCreated: true })
+        const createCollection = await prisma.collection.create({
+            data: body
+        })
+
+        return Response.json({ isCreated: true })
+    } catch (error) {
+        console.error(error)
+        return Response.json(
+            { isCreated: false, message: error.message },
+            { status: 500 }
+        )
+    }
 }
