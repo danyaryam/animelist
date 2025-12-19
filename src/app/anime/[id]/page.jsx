@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic"
+export const runtime = "nodejs"
+
 import { getAnimeResponse, getStreamingResponse } from "@/libs/api-libs"
 import VideoPlayer from "@/components/Utilities/VideoPlayer"
 import Image from "next/image"
