@@ -2,7 +2,7 @@ import { authUserSession } from '@/libs/auth-libs'
 import prisma from '@/libs/prisma'
 import React from 'react'
 import Link from "next/link"
-import Header from '@/components/Dashboard/Header'
+import Header from '@/components/dashboard/header'
 
 const page = async () => {
     const user = await authUserSession()
