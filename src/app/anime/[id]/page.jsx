@@ -13,13 +13,22 @@ import Link from "next/link"
 import StreamingList from "@/components/streaming/page"
 
 const Page = async ({ params: { id } }) => {
+    const prisma = (await import("@/libs/prisma")).default
+
     const anime = await getAnimeResponse(`anime/${id}`)
     const streaming = await getStreamingResponse(`anime/${id}/streaming`)
     const user = await authUserSession()
 
-    const collection = await prisma.collection.findFirst({
-        where: { user_email: user?.email, anime_mal_id: id }
-    })
+    let collection = null
+
+    if (user?.email) {
+        collection = await prisma.collection.findFirst({
+            where: {
+                user_email: user.email,
+                anime_mal_id: String(id),
+            },
+        })
+    }
 
     return (
         <>
@@ -36,7 +45,7 @@ const Page = async ({ params: { id } }) => {
                     />
                 )}
             </div>
-            
+
             <div className="pt-4 px-4 flex gap-3 text-color-primary overflow-x-auto">
                 {[
                     { label: "Peringkat", value: anime.data.rank },

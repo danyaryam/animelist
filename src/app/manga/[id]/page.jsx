@@ -10,12 +10,21 @@ import CommentInput from "@/components/AnimeList/commentInput";
 import CommentBox from "@/components/AnimeList/commentBox";
 
 const Page = async ({ params: { id } }) => {
+    const prisma = (await import("@/libs/prisma")).default
+
     const manga = await getMangaResponse(`manga/${id}`);
     const user = await authUserSession();
 
-    const collection = await prisma.collection.findFirst({
-        where: { user_email: user?.email, anime_mal_id: id }
-    });
+    let collection = null
+
+    if (user?.email) {
+        collection = await prisma.collection.findFirst({
+            where: {
+                user_email: user.email,
+                anime_mal_id: String(id),
+            },
+        })
+    }
 
     return (
         <>
